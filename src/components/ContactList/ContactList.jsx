@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 import css from '../ContactList/ContactList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,6 +7,8 @@ import {
   selectError,
 } from 'redux/selectors';
 import { deleteContacts, fetchContacts } from 'redux/operations';
+import Loader from 'components/Loader/Loader';
+import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 
 const ContactList = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const ContactList = () => {
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <Loader />}
       <ul className={css.list}>
         {visibleContact.map(({ id, name, phone }) => (
           <li key={id} className={css.item}>
@@ -38,7 +39,7 @@ const ContactList = () => {
           </li>
         ))}
       </ul>
-      {error && <p>{error.message}</p>}
+      {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </>
   );
 };

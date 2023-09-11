@@ -8,7 +8,6 @@ const initialState = {
   error: null,
 };
 
-
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
@@ -49,7 +48,9 @@ const contactsSlice = createSlice({
       .addCase(deleteContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.contacts = state.items.filter(item => item.id !== action.payload.id);
+        state.contacts = state.contacts.filter(
+          item => item.id !== action.payload.id
+        );
       });
   },
 });

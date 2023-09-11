@@ -23,11 +23,11 @@ export default function ContactForm() {
       id: nanoid(),
     };
 
-    const isExist = contacts?.find(
-      contact =>
-        contact?.name?.toLowerCase().trim() ===
-        contact.name.toLowerCase().trim()
+    const isExist = contacts.find(
+      ({ name }) =>
+        name.toLowerCase().trim() === contact.name.toLowerCase().trim()
     );
+
     if (isExist) {
       alert(`${contact.name} is already in contacts.`);
       return;
@@ -37,7 +37,6 @@ export default function ContactForm() {
     setName('');
     setNumber('');
   };
-
 
   const handleNameChange = event => {
     setName(event.target.value);
