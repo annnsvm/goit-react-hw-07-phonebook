@@ -11,6 +11,7 @@ import { deleteContacts, fetchContacts } from 'redux/operations';
 
 const ContactList = () => {
   const dispatch = useDispatch();
+
   const visibleContact = useSelector(selectVisibleContact);
   const error = useSelector(selectError);
   const isLoading = useSelector(selectIsLoading);
