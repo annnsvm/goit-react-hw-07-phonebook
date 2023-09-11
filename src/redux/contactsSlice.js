@@ -7,60 +7,50 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-const handleRejected = (state, action) => {
-  return {
-    ...state,
-    isLoading: false,
-    error: action.payload,
-  };
-};
 
-const handlePending = state => {
-  return {
-    ...state,
-    isLoading: true,
-  };
-};
-
-// розбиваємо на 3 функції, щоб не дублювати код
-const handleFetchContactsSuccess = (state, action) => {
-  return { ...state, isLoading: false, error: null, items: action.payload };
-};
-
-const handleAddContactSuccess = (state, action) => {
-  return {
-    ...state,
-    isLoading: false,
-    error: null,
-    items: [action.payload, ...state.items],
-  };
-};
-
-const handleDeleteContactSuccess = (state, action) => {
-  return {
-    ...state,
-    isLoading: false,
-    error: null,
-    items: state.items.filter(item => item.id !== action.payload.id),
-  };
-};
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-
-  extraReducers: {
-    extraReducers: {
-      [fetchContacts.pending]: handlePending,
-      [addContacts.pending]: handlePending,
-      [deleteContacts.pending]: handlePending,
-      [fetchContacts.rejected]: handleRejected,
-      [addContacts.rejected]: handleRejected,
-      [deleteContacts.rejected]: handleRejected,
-      [fetchContacts.fulfilled]: handleFetchContactsSuccess,
-      [addContacts.fulfilled]: handleAddContactSuccess,
-      [deleteContacts.fulfilled]: handleDeleteContactSuccess,
-    },
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(fetchContacts.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(fetchContacts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.contacts = action.payload;
+      })
+      .addCase(addContacts.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(addContacts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(addContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.contacts.push(action.payload);
+      })
+      .addCase(deleteContacts.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(deleteContacts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.contacts = state.items.filter(item => item.id !== action.payload.id);
+      });
   },
 });
 
